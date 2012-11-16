@@ -4,10 +4,11 @@
  * Very simple MVC structure
  */
 
-$loader = new \Phalcon\Loader();		
-
-$loader->registerDirs(array('../apps/controllers/', '../apps/models/'));
-
+$loader = new \Phalcon\Loader();
+$loader->registerDirs(array(
+	'../apps/controllers/',
+	'../apps/models/'
+));
 $loader->register();
 
 $di = new \Phalcon\DI();
@@ -25,26 +26,15 @@ $di->set('response', 'Phalcon\Http\Response');
 $di->set('request', 'Phalcon\Http\Request');
 
 //Registering the view component
-$di->set('view', function(){
-	$view = new \Phalcon\Mvc\View();
-	$view->setViewsDir('../apps/views/');
-	return $view;
-});
-		
-$di->set('db', function(){
-	return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-		"host" => "localhost",
-		"username" => "root",
-		"password" => "hea101",
-		"dbname" => "invo"
-	));
+$di->set('view', function() {
+
+    $view = new \Phalcon\Mvc\View();
+    $view->setViewsDir('../app/views/');
+
+	
+    return $view;
 });
 
-//Registering the Models-Metadata
-$di->set('modelsMetadata', 'Phalcon\Mvc\Model\Metadata\Memory');
-
-//Registering the Models Manager
-$di->set('modelsManager', 'Phalcon\Mvc\Model\Manager');
 
 try {
 	$application = new \Phalcon\Mvc\Application();
