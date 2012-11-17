@@ -1,6 +1,6 @@
 <?php
 
-class IndexController extends BaseController {
+class TestController extends BaseController {
 	
 	public function initialize()
     {
@@ -11,7 +11,7 @@ class IndexController extends BaseController {
 
 
 	public function indexAction(){
-		 
+		 echo phpinfo();
 	}
 	
 }

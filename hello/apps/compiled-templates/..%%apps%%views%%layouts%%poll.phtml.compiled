@@ -1,0 +1,3 @@
+<div class="poll-wrapper">
+	<?php echo $this->getContent(); ?>
+</div>
