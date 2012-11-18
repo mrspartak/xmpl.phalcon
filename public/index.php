@@ -98,6 +98,7 @@ $di->set('cache', function(){
    // $cache = new Phalcon\Cache\Backend\File($frontCache, array(
     //   "cacheDir" => "../apps/cache/"
     //));
+	
 	$cache = new Phalcon\Cache\Backend\Apc($frontCache);
 
     return $cache;
