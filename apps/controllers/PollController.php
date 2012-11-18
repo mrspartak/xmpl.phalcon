@@ -62,8 +62,7 @@ class PollController extends BaseController {
 		
 		else {
 			
-			$bool = $_COOKIE['answered'];
-			if( $bool )
+			if( isset($_COOKIE['answered']) )
 				$this->response->redirect("poll/results");
 				
 		}
