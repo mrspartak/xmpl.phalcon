@@ -3,8 +3,17 @@
 <head>
     <meta charset="utf-8">
     {{ get_title() }}
+    {{ javascript_include("js/jquery-1.8.3.min.js") }}
+    
+    {{ javascript_include("js/raphael.js") }}
+    {{ javascript_include("js/jquery.enumerable.js") }}
+    {{ javascript_include("js/jquery.tufte-graph.js") }}    
+    {{ javascript_include("js/script.js") }}
+    {{ javascript_include("js/jquery.rotate.1-1.js") }}
+    
 	{{ stylesheet_link("css/bootstrap.css") }}
     {{ stylesheet_link("css/style.css") }}
+    {{ stylesheet_link("css/tufte-graph.css") }}
 </head>
 
 <body>
@@ -12,7 +21,9 @@
 		<div class="masthead">
 			<ul class="nav nav-pills pull-right">
 				<li {% if app['controller'] == "index" %}class="active"{% endif %}>{{ link_to('', 'Home') }}</li>
-				<li {% if app['controller'] == "poll" and app['action'] == 'answer' %}class="active"{% endif %}>{{ link_to('poll/answer', 'Poll') }}</li>
+            {% if !answered %}
+                <li {% if app['controller'] == "poll" and app['action'] == 'answer' %}class="active"{% endif %}>{{ link_to('poll/answer', 'Poll') }}</li>
+            {% endif %}
 				<li {% if app['controller'] == "poll" and app['action'] == 'results' %}class="active"{% endif %}>{{ link_to('poll/results', 'Results') }}</li>
 			</ul>
 			<h3 class="muted">Phalcon Example</h3>

@@ -1,0 +1,28 @@
+<div>
+	
+    {% if message == 'twice' %}
+        <div class="alert alert-error">
+           Вы уже отвечали.
+        </div>
+    {% endif %}
+    {% if message == 'answered' %}
+        <div class="alert alert-success">
+           Благодарим за ответ!
+        </div>
+    {% endif %}
+    
+    <h4 class="chart_title_1">График участников <span class="pull-right label"></span></h4>
+    <div id="chart1" class="graph margin-bottom-80" style="height:300px; width:550px;"></div>
+    
+    <h4 class="chart_title_2">Отношение к современной литературе <span class="pull-right label"></span></h4>
+    <div id="chart2" class="graph" style="height:300px;"></div>
+    
+    <h4 class="chart_title_3">Предпочитаемые жанры <span class="pull-right label"></span></h4>
+    <div id="chart3" class="graph" style="height:300px;"></div>
+	
+    <script>
+		$(document).ready(function(){
+			Chart.init();
+		})
+    </script>
+</div>

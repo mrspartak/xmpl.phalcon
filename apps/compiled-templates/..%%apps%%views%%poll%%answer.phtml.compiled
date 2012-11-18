@@ -2,14 +2,15 @@
 	
     <?php if ($message == 'error') { ?>
         <div class="alert alert-error">
-           Возникли проблемы с базой данных. Попробуйте чуть позже.
+           Возникли проблемы с базой данных. Попробуйте чуть позже.<br>
+           Или Вы не заполнили обязательные поля.
         </div>
     <?php } ?>
     
 	<?php echo Phalcon\Tag::form(array('poll/answer')); ?>
     	<legend>Литературный опрос</legend>
         
-        <h4>1. Укажите Ваш пол</h4>
+        <h4>1. Укажите Ваш пол <sup class="red">*</sup></h4>
         <label class="radio">
 			<input type="radio" name="gender" id="" value="1"> Мужской
 		</label>
@@ -17,7 +18,7 @@
 			<input type="radio" name="gender" id="" value="2"> Женский
 		</label>
         
-        <h4 class="margin-top-20">2. К какой возрастной группе Вы принадлежите</h4>
+        <h4 class="margin-top-20">2. К какой возрастной группе Вы принадлежите <sup class="red">*</sup></h4>
         <label class="radio">
 			<input type="radio" name="age" id="" value="1"> Моложе 18 лет
 		</label>
@@ -37,7 +38,7 @@
 			<input type="radio" name="age" id="" value="6"> Старше 60 лет
 		</label>
         
-        <h4 class="margin-top-20">3. Вы любите читать современную литературу</h4>
+        <h4 class="margin-top-20">3. Вы любите читать современную литературу <sup class="red">*</sup></h4>
         <label class="radio">
 			<input type="radio" name="read_modern" id="" value="1"> Да
 		</label>

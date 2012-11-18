@@ -16,6 +16,7 @@ class ViewManager {
 		$view->setVar("app", $app);
 		
 		$view->setVar("message", $view->request->get('message'));
+		$view->setVar("answered", $_COOKIE['answered']);
 		
 		/*
 		$this->_key = $view->getControllerName().'/'.$view->getActionName();

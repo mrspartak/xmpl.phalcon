@@ -1,5 +1,5 @@
 /* CSS Document */
-.wrapper { width:600px; }
+.wrapper { width:700px; }
 .poll-wrapper {
 	padding:10px 15px;
 	background-color:#f1f1f1;
@@ -14,3 +14,5 @@
 .align-center { text-align:center; }
 .li-unstyled { color:#fff; }
 .margin-top-20 { margin-top:20px; }
+.margin-bottom-80 { margin-bottom:80px !important; }
+.red {color: red !important; }

@@ -1,6 +1,6 @@
 <div style="display: inline-block;">
 
-    <?php echo Phalcon\Tag::image(array('public/img/watermark.png', 'class' => 'title-image', 'align' => 'right')); ?>
+    <?php echo Phalcon\Tag::image(array('img/watermark.png', 'class' => 'title-image', 'align' => 'right')); ?>
     <p>
     	Welcome to <br>
     	<h4>THE FASTEST PHP FRAMEWORK</h4>
