@@ -80,72 +80,83 @@ class PollController extends BaseController {
 		
 		$this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
 		
-		$poll = new Poll();
-		$count = Poll::count();
-		
 		$type = $this->request->get('type');
+		$key = 'db-'.$type;
+		$cache = $this->cache->get( $key );
 		
-		$labelsGender = array( '', 'до 18 лет', 'от 18 до 25', 'от 25 до 35 лет', 'от 35 до 45 лет', 'от 45 до 60 лет', 'от 60 лет' );
-		$labelsModern = array( '', 'читаю', 'не читаю', 'не люблю читать' );
-		$labelsGenre = array( 'drama' => 'драма', 'tradegy' => 'трагедия', 'comedy' => 'комедия', 'detective' => 'детектив', 'adventures' => 'приключения', 'fy' => 'фантастика', 'fantasy' => 'фэнтези', 'horror' => 'ужасы', 'cyber' => 'киберпанк', 'ero' => 'эротика', 'bio' => 'биография' );
-		switch( $type ) {
+		
+		if( !$cache ) {
 			
-			case 'genderAge' :
-			$query = $this->modelsManager->executeQuery("SELECT COUNT(id) AS count, gender, age FROM poll GROUP BY gender, age");
-			foreach ($query as $row) {
-				$tmp[ $row->age ][ $row->gender ] = $row->count/$count;
-			}
-			foreach( $tmp as $k => $row ) {
-				$tmps[$k]['row'] = array_values( $row );
-				$tmps[$k]['label'] = $labelsGender[$k];
-			}
-			$tmp = null;
-			$chart = 1;
-			$opt = 0;
-			break;
+			$poll = new Poll();
+			$count = Poll::count();
 			
-			case 'modern' :
-			$query = $this->modelsManager->executeQuery("SELECT COUNT(id) AS count, read_modern FROM poll GROUP BY read_modern");
-			foreach ($query as $row) {
-				$tmp[ $row->read_modern ] = $row->count/$count;
-			}
-			foreach( $tmp as $k => $row ) {
-				$tmps[$k]['row'] = $row;
-				$tmps[$k]['label'] = $labelsModern[$k];
-			}
-			$tmp = null;
-			$chart = 2;
-			$opt = 1;
-			break;
+			$labelsGender = array( '', 'до 18 лет', 'от 18 до 25', 'от 25 до 35 лет', 'от 35 до 45 лет', 'от 45 до 60 лет', 'от 60 лет' );
+			$labelsModern = array( '', 'читаю', 'не читаю', 'не люблю читать' );
+			$labelsGenre = array( 'drama' => 'драма', 'tradegy' => 'трагедия', 'comedy' => 'комедия', 'detective' => 'детектив', 'adventures' => 'приключения', 'fy' => 'фантастика', 'fantasy' => 'фэнтези', 'horror' => 'ужасы', 'cyber' => 'киберпанк', 'ero' => 'эротика', 'bio' => 'биография' );
 			
-			case 'genres' :
-			$genres = array('drama','tradegy','comedy','detective','adventures','fy','fantasy','horror','cyber','ero','bio');
-			foreach( $genres as $k => $genre ) {
-				$query = $this->modelsManager->executeQuery("SELECT COUNT(id) AS count FROM poll WHERE FIND_IN_SET( '$genre', genre)");
+			switch( $type ) {
+			
+				case 'genderAge' :
+				$query = $this->modelsManager->executeQuery("SELECT COUNT(id) AS count, gender, age FROM poll GROUP BY gender, age");
 				foreach ($query as $row) {
-					$tmp[ $genre ] = $row->count/$count;
+					$tmp[ $row->age ][ $row->gender ] = $row->count/$count;
 				}
-			}
-			foreach( $tmp as $k => $row ) {
-				$t['row'] = $row;
-				$t['label'] = $labelsGenre[$k];
-				$tmps[] = $t;
-			}
-			$tmp = null;
-			$chart = 3;
-			$opt = 1;
-			break;
+				foreach( $tmp as $k => $row ) {
+					$tmps[$k]['row'] = array_values( $row );
+					$tmps[$k]['label'] = $labelsGender[$k];
+				}
+				$tmp = null;
+				$chart = 1;
+				$opt = 0;
+				break;
 				
+				case 'modern' :
+				$query = $this->modelsManager->executeQuery("SELECT COUNT(id) AS count, read_modern FROM poll GROUP BY read_modern");
+				foreach ($query as $row) {
+					$tmp[ $row->read_modern ] = $row->count/$count;
+				}
+				foreach( $tmp as $k => $row ) {
+					$tmps[$k]['row'] = $row;
+					$tmps[$k]['label'] = $labelsModern[$k];
+				}
+				$tmp = null;
+				$chart = 2;
+				$opt = 1;
+				break;
+				
+				case 'genres' :
+				$genres = array('drama','tradegy','comedy','detective','adventures','fy','fantasy','horror','cyber','ero','bio');
+				foreach( $genres as $k => $genre ) {
+					$query = $this->modelsManager->executeQuery("SELECT COUNT(id) AS count FROM poll WHERE FIND_IN_SET( '$genre', genre)");
+					foreach ($query as $row) {
+						$tmp[ $genre ] = $row->count/$count;
+					}
+				}
+				foreach( $tmp as $k => $row ) {
+					$t['row'] = $row;
+					$t['label'] = $labelsGenre[$k];
+					$tmps[] = $t;
+				}
+				$tmp = null;
+				$chart = 3;
+				$opt = 1;
+				break;
+					
+			}
+			
+			$result = array(
+				'timestamp' => time(),
+				'chart' => $chart,
+				'opt' => $opt,
+				'data'	=> $tmps
+			);
+			$result = json_encode( $result );
+			$this->cache->save( $key, $result );
+		} else {
+			$result = $cache;
 		}
 		
-		$result = array(
-			'timestamp' => time(),
-			'chart' => $chart,
-			'opt' => $opt,
-			'data'	=> $tmps
-		);
-		
-		echo json_encode( $result );
+		echo $result;
 	}
 	
 	

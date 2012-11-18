@@ -13,7 +13,6 @@ $loader->registerDirs(array(
 ));
 $loader->register();
 
-
 $di = new \Phalcon\DI();
 $di->set('url', function() use ($config){
 	$url = new \Phalcon\Mvc\Url();
@@ -85,6 +84,22 @@ $di->set('voltService', function($view, $di) use ($config) {
     ));
 
     return $volt;
+});
+
+
+$di->set('cache', function(){
+
+    //Cache data for one day by default
+    $frontCache = new Phalcon\Cache\Frontend\Data(array(
+        "lifetime" => 60
+    ));
+
+    //Memcached connection settings
+    $cache = new Phalcon\Cache\Backend\File($frontCache, array(
+       "cacheDir" => "../apps/cache/"
+    ));
+
+    return $cache;
 });
 
 //Registering the view component
