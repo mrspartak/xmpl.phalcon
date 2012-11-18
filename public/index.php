@@ -22,15 +22,6 @@ $di->set('url', function() use ($config){
 
 $di->set('db', function() use ($config) {
 
-    $eventsManager = new Phalcon\Events\Manager();
-    $logger = new Phalcon\Logger\Adapter\File( $config->application->logsDir . "debug.log" );
-    //Listen all the database events
-    $eventsManager->attach('db', function($event, $connection) use ($logger) {
-        if ($event->getType() == 'beforeQuery') {
-            $logger->log($connection->getSQLStatement(), \Phalcon\Logger::INFO);
-        }
-    });
-
     $connection = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
         "host" => $config->database->host,
         "username" => $config->database->username,
@@ -39,9 +30,7 @@ $di->set('db', function() use ($config) {
     ));
 		
     //Assign the eventsManager to the db adapter instance
-    $connection->setEventsManager($eventsManager);
     return $connection;
-	
 });
 
 $di->set('modelsManager', function(){
