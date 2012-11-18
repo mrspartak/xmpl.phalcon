@@ -1,4 +1,4 @@
 .htaccess
-apps/cache/.*
-apps/compiled-templates/.*
-apps/logs/.*
+apps/cache/
+apps/compiled-templates/
+apps/logs/
