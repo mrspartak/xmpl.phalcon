@@ -15,8 +15,10 @@ class PollController extends BaseController {
 		if ($this->request->isPost() == true) {
 			
 			$poll = new Poll();
+			
 			$hash = $this->request->getClientAddress().$this->request->getUserAgent();
-			$hash = md5( $hash );
+			$hash = md5( $hash . rand() );
+			/*
 			$bool = $poll->find("hash = '".$hash."'");
 
 			if( $bool->count() ) {
@@ -25,7 +27,7 @@ class PollController extends BaseController {
 				return $this->response->redirect("poll/results?message=twice");
 				
 			} else {
-				
+			*/
 				$post = $this->request;	
 							
 				$poll->gender = $post->getPost("gender", "int");
@@ -45,8 +47,9 @@ class PollController extends BaseController {
 					setcookie('answered', 1, time()+60*60*24*30, '/');
 					$this->response->redirect("poll/results?message=answered");
 				}
-
+			/*
 			}
+			*/
 				
 		}
 		
