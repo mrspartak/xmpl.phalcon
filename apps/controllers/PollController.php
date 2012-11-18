@@ -39,9 +39,9 @@ class PollController extends BaseController {
 					$poll->genre = '';
 					$poll->method = '';
 				} else {
-					$poll->authors = implode( ',', $post->getPost("authors") );
-					$poll->genre = implode( ',', $post->getPost("genre") );
-					$poll->method = implode( ',', $post->getPost("method") );
+					$poll->authors = @implode( ',', $post->getPost("authors") );
+					$poll->genre = @implode( ',', $post->getPost("genre") );
+					$poll->method = @implode( ',', $post->getPost("method") );
 				}
 				
 				
