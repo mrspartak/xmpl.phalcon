@@ -95,9 +95,10 @@ $di->set('cache', function(){
     ));
 
     //Memcached connection settings
-    $cache = new Phalcon\Cache\Backend\File($frontCache, array(
-       "cacheDir" => "../apps/cache/"
-    ));
+   // $cache = new Phalcon\Cache\Backend\File($frontCache, array(
+    //   "cacheDir" => "../apps/cache/"
+    //));
+	$cache = new Phalcon\Cache\Backend\Apc($frontCache);
 
     return $cache;
 });
