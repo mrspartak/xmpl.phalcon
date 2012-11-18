@@ -1,5 +1,13 @@
 $(function(){
-	
+	$('input[name=read_modern]').change(function(){
+		
+		if( $(this).val() == 3 ) {
+			$('.to_hide').addClass('hidden');
+		} else {
+			$('.to_hide').removeClass('hidden');
+		}
+		
+	})
 })
 
 Chart = {

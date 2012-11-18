@@ -11,6 +11,7 @@
 	height:200px;
 	margin-left:20px;	
 }
+.hidden {display:none;}
 .align-center { text-align:center; }
 .li-unstyled { color:#fff; }
 .margin-top-20 { margin-top:20px; }

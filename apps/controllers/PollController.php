@@ -34,9 +34,16 @@ class PollController extends BaseController {
 				$poll->age = $post->getPost("age", "int");
 				$poll->read_modern = $post->getPost("read_modern", "int");
 				
-				$poll->authors = implode( ',', $post->getPost("authors") );
-				$poll->genre = implode( ',', $post->getPost("genre") );
-				$poll->method = implode( ',', $post->getPost("method") );
+				if( $poll->read_modern == 3 ) {
+					$poll->authors = '';
+					$poll->genre = '';
+					$poll->method = '';
+				} else {
+					$poll->authors = implode( ',', $post->getPost("authors") );
+					$poll->genre = implode( ',', $post->getPost("genre") );
+					$poll->method = implode( ',', $post->getPost("method") );
+				}
+				
 				
 				$poll->hash = $hash;
 				$poll->timestamp = time();				
