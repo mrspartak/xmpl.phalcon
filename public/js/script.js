@@ -18,9 +18,11 @@ Chart = {
 	},
 	
 	init : function(){
-		$.getJSON( '/poll/ajax', {type: 'genderAge'}, Chart.functions.prepare ); 
-		$.getJSON( '/poll/ajax', {type: 'modern'}, Chart.functions.prepare );
-		$.getJSON( '/poll/ajax', {type: 'genres'}, Chart.functions.prepare );
+		time = new Date()
+		t = time.getDate()+''+time.getMonth()+''+time.getFullYear()+''+time.getHours()+''+time.getMinutes()
+		$.getJSON( '/poll/ajax', {type: 'genderAge', rand: t}, Chart.functions.prepare ); 
+		$.getJSON( '/poll/ajax', {type: 'modern', rand: t}, Chart.functions.prepare );
+		$.getJSON( '/poll/ajax', {type: 'genres', rand: t}, Chart.functions.prepare );
 	},
 	
 	functions : {
