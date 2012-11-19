@@ -1,10 +1,9 @@
 <?php
 
-/**
- * Very simple MVC structure
- */
+//load ini config into variable
 $config = new Phalcon\Config\Adapter\Ini( '../apps/config/config.ini' );
 
+//set Loader and basic dirs, where Classes are.
 $loader = new \Phalcon\Loader();
 $loader->registerDirs(array(
 	$config->application->controllersDir,
@@ -13,14 +12,17 @@ $loader->registerDirs(array(
 ));
 $loader->register();
 
+//settind dependency injector
 $di = new \Phalcon\DI();
+
+//url component
 $di->set('url', function() use ($config){
 	$url = new \Phalcon\Mvc\Url();
 	return $url;
 });
 
+//DB component
 $di->set('db', function() use ($config) {
-
     $connection = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
         "host" => $config->database->host,
         "username" => $config->database->username,
@@ -28,10 +30,10 @@ $di->set('db', function() use ($config) {
         "dbname" => $config->database->name
     ));
 		
-    //Assign the eventsManager to the db adapter instance
     return $connection;
 });
 
+//Register models Manager
 $di->set('modelsManager', function(){
 	return new Phalcon\Mvc\Model\Manager();
 });
@@ -49,80 +51,63 @@ $di->set('dispatcher', function() use ($di) {
 	return $dispatcher;
 });
 
-
 //Registering a Http\Response 
 $di->set('response', 'Phalcon\Http\Response');
 
 //Registering a Http\Request
 $di->set('request', 'Phalcon\Http\Request');
 
-
+//register filter
 $di->set('filter', function(){
     return new \Phalcon\Filter();
 });
 
-$di->set("cache", function() use ($config) {
-	
-    $frontCache = new Phalcon\Cache\Frontend\Data(array(
-    	"lifetime" => 2
-	));
-
-	$cache = new Phalcon\Cache\Backend\File($frontCache, array(
-		"cacheDir" => $config->application->cacheDir
-	));
-	return $cache;
-	
-});
-
+//register service to run templates
 $di->set('voltService', function($view, $di) use ($config) {
-
     $volt = new Phalcon\Mvc\View\Engine\Volt($view, $di);
-
     $volt->setOptions(array(
         "compiledPath" => $config->application->templCompDir,
         "compiledExtension" => ".compiled"
     ));
-
     return $volt;
 });
 
-
+//set cache engine
 $di->set('cache', function(){
-
-    //Cache data for one day by default
+    //Cache data for 1 minute
     $frontCache = new Phalcon\Cache\Frontend\Data(array(
         "lifetime" => 60
     ));
 
     //Memcached connection settings
-   // $cache = new Phalcon\Cache\Backend\File($frontCache, array(
+    // $cache = new Phalcon\Cache\Backend\File($frontCache, array(
     //   "cacheDir" => "../apps/cache/"
     //));
-	
-	$cache = new Phalcon\Cache\Backend\Apc($frontCache);
 
+    // we would use APC cache
+    $cache = new Phalcon\Cache\Backend\Apc($frontCache);
     return $cache;
 });
 
 //Registering the view component
 $di->set('view', function() use ($config) {
-	
-	$eventsManager = new \Phalcon\Events\Manager();
-	$viewManager = new ViewManager();
-	$eventsManager->attach('view', $viewManager);
+    //register event manager for view
+    $eventsManager = new \Phalcon\Events\Manager();
+    $viewManager = new ViewManager();
+    $eventsManager->attach('view', $viewManager);
 
     $view = new \Phalcon\Mvc\View();
     $view->setViewsDir( $config->application->viewsDir );
-	$view->registerEngines(array(
-		".phtml" => 'voltService'
-	));
+    $view->registerEngines(array(
+    	".phtml" => 'voltService'
+    ));
 	
-	$view->setEventsManager($eventsManager);
+    $view->setEventsManager($eventsManager);
 	
     return $view;
 });
 
-
+//init applicartion
 try {
 	$application = new \Phalcon\Mvc\Application();
 	$application->setDI($di);
