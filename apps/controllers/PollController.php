@@ -16,8 +16,9 @@ class PollController extends BaseController {
 			
 			$poll = new Poll();
 			
-			$hash = $this->request->getClientAddress().$this->request->getUserAgent();
-			$hash = md5( $hash . rand() );
+			//$hash = $this->request->getClientAddress().$this->request->getUserAgent();
+			//$hash = md5( $hash . rand() );
+			$hash = $this->request->getClientAddress();
 			/*
 			$bool = $poll->find("hash = '".$hash."'");
 
@@ -39,9 +40,9 @@ class PollController extends BaseController {
 					$poll->genre = '';
 					$poll->method = '';
 				} else {
-					$poll->authors = @implode( ',', $post->getPost("authors") );
-					$poll->genre = @implode( ',', $post->getPost("genre") );
-					$poll->method = @implode( ',', $post->getPost("method") );
+					$poll->authors = implode( ',', $post->getPost("authors") );
+					$poll->genre = implode( ',', $post->getPost("genre") );
+					$poll->method = implode( ',', $post->getPost("method") );
 				}
 				
 				
