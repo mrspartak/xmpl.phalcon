@@ -2,3 +2,4 @@
 apps/cache/
 apps/compiled-templates/
 apps/logs/
+apps/config/
